@@ -1,7 +1,7 @@
 from engine import load_csv, apply_where, apply_select, apply_count
 from parser import parse_sql
 
-DATA_FILE = "data/users.csv"
+DATA_FILE = "data/customers.csv"
 
 
 def main():
@@ -23,23 +23,23 @@ def main():
         try:
             parsed = parse_sql(query)
 
-            # Apply WHERE clause (supports AND)
+           
             filtered_data = apply_where(data, parsed["where"])
 
             select_cols = parsed["select"]
 
-            # ---------- COUNT handling ----------
+            
             if len(select_cols) == 1 and select_cols[0].lower().startswith("count"):
                 count_expr = select_cols[0].lower()
 
                 if count_expr == "count(*)":
                     print(apply_count(filtered_data))
                 else:
-                    # Extract column name from COUNT(column)
+                   
                     column = count_expr.replace("count(", "").replace(")", "").strip()
                     print(apply_count(filtered_data, column))
 
-            # ---------- Normal SELECT ----------
+           
             else:
                 selected_data = apply_select(filtered_data, select_cols)
 
